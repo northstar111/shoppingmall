@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--匿名访问-->
+    <http pattern="/login.html" security="none"/>
+    <http pattern="/css/**" security="none"/>
+    <http pattern="/img/**" security="none"/>
+    <http pattern="/js/**" security="none"/>
+    <http pattern="/plugins/**" security="none"/>
+
+    <!--拦截规则，不使用表达式-->
+    <http use-expressions="false">
+        <!--拦截所有请求-->
+        <!--/* 只拦截当前目录下的文件，/** 拦截当前及子目录-->
+        <!--access 指定访问资源需要的权限，ROLE_ 格式固定-->
+        <intercept-url pattern="/**" access="ROLE_ADMIN"/>
+        <!--指定登录页，及登陆成功或失败时跳转的页面-->
+        <form-login login-page="/login.html" default-target-url="/admin/index.html" always-use-default-target="true" authentication-failure-url="/login.html"/>
+        <!--关闭CSRF检查-->
+        <csrf disabled="true"/>
+        <!--退出后的页面-->
+        <logout logout-success-url="/login.html"/>
+        <!--允许访问框架内容-->
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+    </http>
+
+    <!--认证管理器，它可以得到页面提交的用户信息，然后：-->
+    <!--两个作用：1、核对用户名和密码，2、保存用户信息-->
+    <authentication-manager>
+        <authentication-provider>
+            <!--用户登陆信息-->
+            <user-service>
+                <user name="ylb" password="123" authorities="ROLE_ADMIN"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

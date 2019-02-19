@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>pyg_parent</artifactId>
+        <groupId>com.pyg</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>pyg_page_web</artifactId>
+
+    <!--打war包-->
+    <packaging>war</packaging>
+
+    <dependencies>
+        <!-- springmvc框架 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!--定义变量-->
+    <properties>
+        <port>9105</port>
+    </properties>
+    <!--使用环境-->
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <port>9105</port>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <port>9205</port>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <port>9305</port>
+            </properties>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定端口 -->
+                    <!--<port>9105</port>-->
+                    <port>${port}</port>
+                    <!-- 请求路径 -->
+                    <path>/</path>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
